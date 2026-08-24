@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rustfield · 小红书 3:4 图文卡片</title>
+    <script src="../assets/html2canvas.min.js"></script>
+    <style>
+      :root { --canvas:#f8f7f3; --blue:#31589e; --blue-deep:#27457e; --blue-soft:#dcebff; --pink:#f08ab7; --pink-deep:#8e2e5b; --pink-soft:#ffe0ec; --frame:#c6c8cd; --frame-dark:#626873; --ink:#1e2635; --muted:#62718a; --paper:#fff; }
+      * { box-sizing:border-box; }
+      html { scroll-behavior:smooth; }
+      body { margin:0; min-height:100vh; color:var(--ink); font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif; background:radial-gradient(circle at 84% 78%,rgb(240 138 183 / .2),transparent 24rem),radial-gradient(rgb(49 88 158 / .14) 1px,transparent 1px) 0 0/18px 18px,var(--canvas); }
+      button { font:inherit; }
+      .toolbar { position:sticky; z-index:5; top:0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:14px 20px; color:var(--ink); border-bottom:1px solid rgb(30 38 53 / .2); background:rgb(248 247 243 / .92); backdrop-filter:blur(10px); }
+      .toolbar-title { font-size:13px; font-weight:900; letter-spacing:.1em; }
+      .toolbar-actions { display:flex; flex-wrap:wrap; gap:8px; }
+      .toolbar button,.card-tab { cursor:pointer; padding:8px 12px; color:var(--blue-deep); border:1px solid #819bd0; border-radius:999px; background:linear-gradient(#fff,#dcebff); font-size:12px; font-weight:800; }
+      .toolbar button:hover,.card-tab:hover { color:var(--pink-deep); border-color:#d96f9e; }
+      .toolbar-note { width:100%; margin:0; color:var(--muted); font-size:12px; }
+      .gallery { display:grid; justify-items:center; gap:18px; padding:30px 18px 70px; }
+      .card-tabs { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; max-width:780px; }
+      .card-tab.is-active { color:var(--pink-deep); border-color:#d96f9e; background:linear-gradient(#fff8fb,var(--pink-soft)); }
+      .card-viewport { width:min(92vw,540px); aspect-ratio:3 / 4; }
+      .card { position:relative; display:none; width:1080px; height:1440px; overflow:hidden; padding:64px; border:24px solid var(--frame); background:radial-gradient(circle at 88% 13%,rgb(240 138 183 / .24),transparent 260px),linear-gradient(135deg,#e8f2ff 0%,#fff 52%,#ffe8f1 100%); box-shadow:inset 4px 4px #fff,inset -7px -7px rgb(98 104 115 / .5),14px 16px 0 rgb(91 96 106 / .42); transform:scale(.5); transform-origin:top left; }
+      .card.is-active { display:block; }
+      .card::before { position:absolute; inset:0; pointer-events:none; opacity:.22; background:radial-gradient(rgb(49 88 158 / .2) 1px,transparent 1px) 0 0/24px 24px; content:""; }
+      .card-inner { position:relative; z-index:1; height:100%; }
+      .mini-window { position:relative; overflow:hidden; border:2px solid var(--frame-dark); background:rgb(255 255 255 / .82); box-shadow:6px 7px 0 rgb(49 88 158 / .14),inset 2px 2px #fff; }
+      .mini-titlebar { display:flex; align-items:center; justify-content:space-between; min-height:54px; padding:0 18px; color:#fff; border-bottom:2px solid var(--ink); background:var(--blue); font-size:19px; font-weight:900; letter-spacing:.12em; }
+      .mini-controls { display:flex; gap:7px; }
+      .mini-controls i { display:grid; width:22px; height:22px; place-items:center; color:var(--ink); border:1px solid var(--ink); background:linear-gradient(#fff,#bcc1cc); font-size:14px; font-style:normal; line-height:1; }
+      .eyebrow { margin:0; color:var(--blue); font-size:20px; font-weight:900; letter-spacing:.13em; }
+      .cover .mini-window { height:100%; padding-bottom:44px; }
+      .cover .card-copy { display:grid; grid-template-columns:1.06fr .94fr; gap:36px; align-items:center; height:calc(100% - 54px); padding:72px 58px; }
+      .cover h1 { margin:20px 0 24px; max-width:560px; font-size:92px; line-height:1.12; letter-spacing:-.06em; }
+      .cover h1 mark,.statement h2 mark,.ending h2 mark { color:var(--ink); background:linear-gradient(transparent 58%,var(--pink) 58% 90%,transparent 90%); }
+      .cover .lead { max-width:520px; margin:0; color:var(--muted); font-size:31px; line-height:1.6; }
+      .cover .cat { width:100%; max-width:380px; aspect-ratio:1; justify-self:end; padding:13px; border:2px solid #858e9c; background:linear-gradient(135deg,#f4f4f1,#c8ccd2); box-shadow:8px 10px 0 rgb(49 88 158 / .16),inset 3px 3px #fff; transform:rotate(2deg); }
+      .cover .cat img { display:block; width:100%; height:100%; object-fit:cover; border:2px solid var(--ink); }
+      .signature { display:flex; align-items:center; gap:12px; margin-top:28px; font-size:23px; font-weight:900; }
+      .avatar { width:52px; height:52px; object-fit:cover; object-position:50% 25%; border:2px solid var(--frame-dark); border-radius:50%; background:var(--blue); }
+      .statement { display:grid; align-content:center; height:100%; padding:96px 82px; }
+      .statement .big-number { position:absolute; top:70px; right:40px; color:rgb(49 88 158 / .13); font-size:230px; font-weight:900; line-height:.8; letter-spacing:-.12em; }
+      .statement h2 { max-width:780px; margin:28px 0; font-size:86px; line-height:1.18; letter-spacing:-.06em; }
+      .statement .lead { max-width:680px; margin:0; color:var(--muted); font-size:32px; line-height:1.65; }
+      .statement .quote-strip { display:inline-block; width:max-content; max-width:100%; margin-top:48px; padding:16px 22px; color:var(--pink-deep); border:2px solid #d96f9e; background:var(--pink-soft); font-size:27px; font-weight:900; }
+      .process { padding:82px; }
+      .process h2,.evidence h2 { max-width:760px; margin:24px 0 44px; font-size:70px; line-height:1.18; letter-spacing:-.05em; }
+      .process-rail { position:relative; display:grid; gap:26px; padding-left:82px; }
+      .process-rail::before { position:absolute; top:22px; bottom:22px; left:25px; width:4px; background:linear-gradient(var(--pink),var(--blue)); content:""; }
+      .process-step { position:relative; padding:22px 26px; border:2px solid #819bd0; border-radius:14px; background:rgb(255 255 255 / .84); font-size:33px; font-weight:900; }
+      .process-step::before { position:absolute; left:-82px; top:20px; display:grid; width:54px; height:54px; place-items:center; color:var(--blue); border:3px solid var(--blue); border-radius:50%; background:var(--paper); font-size:22px; content:attr(data-step); }
+      .process-step.current { color:var(--pink-deep); border-color:#d96f9e; background:var(--pink-soft); }
+      .process-step.current::before { color:var(--pink-deep); border-color:#d96f9e; background:var(--pink); }
+      .evidence { padding:82px; }
+      .evidence h2 { margin-bottom:32px; }
+      .evidence-figure { position:relative; overflow:hidden; margin:0; border:3px solid var(--frame-dark); background:#f6f5ef; box-shadow:8px 9px 0 rgb(49 88 158 / .14),inset 3px 3px #fff; }
+      .evidence-figure img { display:block; width:100%; height:590px; object-fit:cover; }
+      .evidence-figure::after { position:absolute; left:31%; top:29%; width:36%; height:30%; border:5px solid var(--pink); box-shadow:0 0 0 999px rgb(240 138 183 / .1); content:""; }
+      .evidence-note { margin:24px 0 0; color:var(--muted); font-size:28px; line-height:1.6; }
+      .ending { display:grid; place-items:center; height:100%; padding:90px; text-align:center; }
+      .ending .quote-mark { color:rgb(49 88 158 / .16); font-family:Georgia,serif; font-size:220px; line-height:.45; }
+      .ending h2 { max-width:820px; margin:24px auto; font-size:82px; line-height:1.18; letter-spacing:-.06em; }
+      .ending .lead { max-width:700px; margin:0 auto; color:var(--muted); font-size:31px; line-height:1.6; }
+      .ending .tags { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:34px; }
+      .ending .tags span { padding:12px 18px; color:var(--blue-deep); border:2px solid #819bd0; border-radius:999px; background:linear-gradient(#fff,#dcebff); font-size:24px; font-weight:900; transform:rotate(-1deg); }
+      .ending .tags span:nth-child(2),.ending .tags span:nth-child(4) { color:var(--pink-deep); border-color:#d96f9e; background:linear-gradient(#fff8fb,var(--pink-soft)); transform:rotate(1deg); }
+      .status { min-height:20px; margin:0; color:var(--muted); font-size:12px; text-align:center; }
+      @media (max-width:700px) { .toolbar { padding:12px; } .toolbar-title { width:100%; } .gallery { padding-inline:8px; } }
+      @media print { body { background:#fff; } .toolbar,.card-tabs,.status { display:none; } .gallery { display:block; padding:0; } .card-viewport { width:1080px; height:1440px; margin:0; } .card { display:none!important; transform:none; } .card.is-active { display:block!important; } }
+      @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+    </style>
+  </head>
+  <body>
+    <header class="toolbar">
+      <div class="toolbar-title">RUSTFIELD_VISUAL / 3:4 CARD SYSTEM</div>
+      <div class="toolbar-actions">
+        <button type="button" data-action="export-current">导出当前 PNG</button>
+        <button type="button" data-action="export-all">导出全部 PNG</button>
+        <button type="button" onclick="window.print()">打印当前卡片</button>
+      </div>
+      <p class="toolbar-note">1080 × 1440 · 小红书竖向图文模板 · 先替换内容，再决定是否加入黑猫或证据图片。</p>
+    </header>
+    <main class="gallery">
+      <nav class="card-tabs" aria-label="卡片选择">
+        <button class="card-tab is-active" type="button" data-card="0">01 封面</button>
+        <button class="card-tab" type="button" data-card="1">02 观点</button>
+        <button class="card-tab" type="button" data-card="2">03 流程</button>
+        <button class="card-tab" type="button" data-card="3">04 证据</button>
+        <button class="card-tab" type="button" data-card="4">05 尾页</button>
+      </nav>
+      <div class="card-viewport" id="card-viewport">
+        <article class="card cover is-active" data-card="0">
+          <div class="card-inner">
+            <div class="mini-window">
+              <div class="mini-titlebar"><span>RUSTFIELD / AI VIDEO NOTES</span><span class="mini-controls"><i>−</i><i>□</i><i>×</i></span></div>
+              <div class="card-copy">
+                <div>
+                  <p class="eyebrow">01 / 先定义你的审美输入</p>
+                  <h1>AI 视频不是从提示词开始，<mark>而是从判断开始。</mark></h1>
+                  <p class="lead">先建立风格、参考、模型与镜头的共同语言，再让工具参与生成。</p>
+                  <div class="signature"><img class="avatar" src="../assets/ai-video-tutorial/black-cat-witch.png" alt="" /><span>@锈原 Rustfield</span></div>
+                </div>
+                <div class="cat"><img src="../assets/ai-video-tutorial/black-cat-witch.png" alt="黑猫女巫角色插图" /></div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article class="card statement" data-card="1">
+          <div class="card-inner">
+            <span class="big-number">02</span>
+            <p class="eyebrow">一个先记住的判断</p>
+            <h2>提示词只能复刻，<mark>思路才能迁移。</mark></h2>
+            <p class="lead">真正能带走的不是一条提示词，而是你如何建立风格、内容和镜头之间的判断。</p>
+            <span class="quote-strip">把感觉变成下一次还能使用的语言。</span>
+          </div>
+        </article>
+        <article class="card process" data-card="2">
+          <div class="card-inner">
+            <p class="eyebrow">03 / 一条可以跟上的路径</p>
+            <h2>先确定方向，<br /><mark>再让工具参与。</mark></h2>
+            <div class="process-rail">
+              <div class="process-step current" data-step="01">定义风格与主题</div>
+              <div class="process-step" data-step="02">拆解参考</div>
+              <div class="process-step" data-step="03">选择模型</div>
+              <div class="process-step" data-step="04">组织提示词</div>
+            </div>
+          </div>
+        </article>
+        <article class="card evidence" data-card="3">
+          <div class="card-inner">
+            <p class="eyebrow">04 / 不解释整张图，只看一个证据</p>
+            <h2>真正值得复用的，<mark>通常是一个细节。</mark></h2>
+            <figure class="evidence-figure"><img src="../assets/reference-placeholder.svg" alt="参考画面拆解示例" /></figure>
+            <p class="evidence-note">先看这一块：它决定画面能不能继续被复用。</p>
+          </div>
+        </article>
+        <article class="card ending" data-card="4">
+          <div class="card-inner">
+            <span class="quote-mark">“</span>
+            <h2>把工具用得更好，<br /><mark>先把自己的判断说清楚。</mark></h2>
+            <p class="lead">设计、美学、产品、vibe coding。欢迎关注我，一起探索 AI 时代的一切可能性。</p>
+            <div class="signature"><img class="avatar" src="../assets/ai-video-tutorial/black-cat-witch.png" alt="" /><span>@锈原 Rustfield</span></div>
+            <div class="tags"><span>设计</span><span>美学</span><span>产品</span><span>vibe coding</span></div>
+          </div>
+        </article>
+      </div>
+      <p class="status" id="status" aria-live="polite">当前：01 封面</p>
+    </main>
+    <script>
+      (() => {
+        const cards = [...document.querySelectorAll('.card')];
+        const tabs = [...document.querySelectorAll('.card-tab')];
+        const viewport = document.querySelector('#card-viewport');
+        const status = document.querySelector('#status');
+        const names = ['封面', '观点', '流程', '证据', '尾页'];
+        let current = 0;
+        const setScale = () => { viewport.style.setProperty('--card-scale', Math.min(viewport.clientWidth / 1080, 0.5)); cards.forEach(card => card.style.transform = `scale(${Math.min(viewport.clientWidth / 1080, 0.5)})`); };
+        const select = index => { current = Math.max(0, Math.min(index, cards.length - 1)); cards.forEach((card, i) => card.classList.toggle('is-active', i === current)); tabs.forEach((tab, i) => tab.classList.toggle('is-active', i === current)); status.textContent = `当前：${String(current + 1).padStart(2, '0')} ${names[current]}`; setScale(); };
+        tabs.forEach((tab, i) => tab.addEventListener('click', () => select(i)));
+        window.addEventListener('resize', setScale);
+        const capture = async (card, filename) => { if (!window.html2canvas) { status.textContent = 'PNG 导出引擎未加载；可以使用“打印当前卡片”保存为 PDF 或图片。'; return; } const canvas = await window.html2canvas(card, { scale:1, backgroundColor:null, useCORS:true }); const link = document.createElement('a'); link.download = filename; link.href = canvas.toDataURL('image/png'); link.click(); };
+        window.exportCurrentCard = () => capture(cards[current], `rustfield-card-${String(current + 1).padStart(2, '0')}.png`);
+        window.exportAllCards = async () => { for (let i = 0; i < cards.length; i += 1) { select(i); await capture(cards[i], `rustfield-card-${String(i + 1).padStart(2, '0')}.png`); } };
+        document.querySelector('[data-action="export-current"]').addEventListener('click', window.exportCurrentCard);
+        document.querySelector('[data-action="export-all"]').addEventListener('click', window.exportAllCards);
+        setScale();
+      })();
+    </script>
+  </body>
+</html>

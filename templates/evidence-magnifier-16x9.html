@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rustfield · 证据放大</title>
+    <style>
+      :root { --blue:#31589e; --blue-soft:#dcebff; --pink:#f08ab7; --pink-soft:#ffe0ec; --ink:#1e2635; --paper:#fff; }
+      * { box-sizing:border-box; }
+      figure { margin:0; }
+      body { margin:0; min-height:100vh; display:grid; place-items:center; color:var(--ink); font-family:Arial,"PingFang SC",sans-serif; background:radial-gradient(circle at 12% 78%,rgb(240 138 183 / .24),transparent 23rem),radial-gradient(rgb(49 88 158 / .13) 1px,transparent 1px) 0 0/16px 16px,#f8f7f3; }
+      .screen { width:min(94vw,1280px); aspect-ratio:16/9; padding:8px; border:2px solid #626873; background:linear-gradient(135deg,#fafafa,#d7d9dd 40%,#a7abb3); box-shadow:inset 2px 2px #fff,inset -3px -3px rgb(76 81 91 / .55),10px 10px 0 rgb(91 96 106 / .6); }
+      .titlebar { height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 15px; color:#fff; border:1.5px solid var(--ink); background:var(--blue); font-size:13px; font-weight:800; letter-spacing:.11em; }
+      .controls { display:flex; gap:5px; } .control { width:18px; height:18px; display:grid; place-items:center; color:var(--ink); border:1px solid var(--ink); background:linear-gradient(135deg,#fff,#bcc1cc); font-size:12px; }
+      .stage { height:calc(100% - 48px); padding:clamp(28px,4vw,54px); border:1px solid rgb(30 38 53 / .32); background:radial-gradient(circle at 86% 18%,rgb(240 138 183 / .22),transparent 16rem),linear-gradient(135deg,rgb(220 235 255 / .78),rgb(255 255 255 / .98) 52%,rgb(255 224 236 / .72)); }
+      .eyebrow { margin:0; color:var(--blue); font-size:12px; font-weight:800; letter-spacing:.11em; }
+      .stage-head { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); gap:clamp(30px,5vw,70px); align-items:end; margin-bottom:22px; }
+      h1 { margin:10px 0 0; font-size:clamp(32px,4.6vw,64px); line-height:.98; letter-spacing:-.07em; }
+      .lead { max-width:380px; margin:0; font-size:clamp(16px,1.6vw,22px); line-height:1.45; }
+      .evidence-layout { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(210px,.55fr); gap:clamp(24px,4vw,52px); align-items:center; }
+      .evidence-frame { position:relative; height:clamp(240px,27vw,330px); overflow:hidden; border:2px solid #6f7786; background:linear-gradient(135deg,#f9f9f8,#dcecff); box-shadow:5px 7px 0 rgb(49 88 158 / .14),0 12px 24px rgb(49 88 158 / .09),inset 1px 1px #fff; }
+      .evidence-bar { height:34px; display:flex; align-items:center; justify-content:space-between; padding:0 12px; color:var(--ink); border-bottom:2px solid #6f7786; background:#d7d9dd; font-size:11px; font-weight:800; letter-spacing:.1em; }
+      .evidence-art { position:absolute; top:34px; left:0; width:100%; height:calc(100% - 34px); background:#eef4fb; }
+      .evidence-art .screen-fill { fill:#fdfdfc; } .evidence-art .grid-line { stroke:#b7c9e4; stroke-width:1; opacity:.65; } .evidence-art .window-fill { fill:#dcebff; stroke:#31589e; stroke-width:2; } .evidence-art .ink-line { stroke:#1e2635; stroke-width:4; stroke-linecap:round; } .evidence-art .pink-line { stroke:#f08ab7; stroke-width:8; stroke-linecap:round; }
+      .focus-box { position:absolute; top:36%; left:44%; width:25%; height:32%; border:3px solid var(--pink); box-shadow:0 0 0 5px rgb(240 138 183 / .18); animation:focus-pulse 4s ease-in-out infinite; }
+      .focus-box::after { position:absolute; right:-10px; top:-10px; width:17px; height:17px; border:2px solid var(--ink); border-radius:50%; background:var(--pink); content:""; }
+      .evidence-caption { position:absolute; left:14px; bottom:12px; color:#59677e; font-size:11px; letter-spacing:.08em; }
+      .focus-note { padding:16px 0 0; border-top:3px solid var(--pink); }
+      .focus-note-tag { color:#8e2e5b; font-size:11px; font-weight:800; letter-spacing:.1em; }
+      .focus-note h2 { margin:14px 0 10px; font-size:clamp(24px,2.5vw,36px); line-height:1; letter-spacing:-.06em; }
+      .focus-note p { margin:0; color:#59677e; font-size:clamp(15px,1.5vw,20px); line-height:1.5; }
+      @keyframes focus-pulse { 50% { box-shadow:0 0 0 8px rgb(240 138 183 / .12); } }
+      @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; } }
+    </style>
+  </head>
+  <body>
+    <main class="screen">
+      <header class="titlebar"><span>EVIDENCE_MAGNIFIER / EPISODE_05</span><span class="controls"><i class="control">−</i><i class="control">□</i><i class="control">×</i></span></header>
+      <section class="stage">
+        <div class="stage-head"><div><p class="eyebrow">05 / 不解释整张图，只放大一个证据</p><h1>真正值得复用的，<br />通常是一个细节。</h1></div><p class="lead">把截图、作品或案例放进来，再用一次框选告诉观众：你希望他看哪里，以及它为什么重要。</p></div>
+        <div class="evidence-layout">
+          <figure class="evidence-frame">
+          <div class="evidence-bar"><span>REFERENCE / FRAME_01</span><span>LOCAL FOCUS</span></div>
+            <svg class="evidence-art" viewBox="0 0 800 360" role="img" aria-label="待替换的参考画面占位图"><rect class="screen-fill" x="18" y="18" width="764" height="324" rx="3"/><path class="grid-line" d="M18 82H782M18 146H782M18 210H782M18 274H782M170 18V342M322 18V342M474 18V342M626 18V342"/><rect class="window-fill" x="78" y="62" width="280" height="188" rx="8"/><path class="ink-line" d="M108 108h170M108 135h120M108 178h195M108 205h145"/><rect x="443" y="78" width="250" height="148" rx="4" fill="#ffe0ec" stroke="#d96f9e" stroke-width="2"/><path class="pink-line" d="M478 169h165"/><path class="ink-line" d="M478 116h125M478 139h92"/></svg>
+            <span class="focus-box" aria-hidden="true"></span><figcaption class="evidence-caption">参考画面 / 可替换为截图或插图</figcaption>
+          </figure>
+          <aside class="focus-note"><span class="focus-note-tag">LOOK HERE / 局部证据</span><h2>先看这一块。</h2><p>它不是整张图的装饰，而是决定画面能否继续复用的关键细节。</p></aside>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

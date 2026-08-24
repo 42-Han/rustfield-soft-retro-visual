@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rustfield · 模板导航</title>
+    <style>
+      :root { --blue:#31589e; --pink:#f08ab7; --pink-deep:#8e2e5b; --pink-soft:#ffe0ec; --ink:#1e2635; --muted:#62718a; }
+      * { box-sizing:border-box; }
+      body { margin:0; min-height:100vh; padding:24px 0; color:var(--ink); font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif; background:radial-gradient(circle at 84% 78%,rgb(240 138 183 / .24),transparent 23rem),radial-gradient(rgb(49 88 158 / .13) 1px,transparent 1px) 0 0/16px 16px,#f8f7f3; }
+      .screen { width:min(94vw,1280px); min-height:calc(100vh - 48px); margin:0 auto; padding:8px; border:2px solid #626873; background:linear-gradient(135deg,#fafafa,#d7d9dd 40%,#a7abb3); box-shadow:inset 2px 2px #fff,inset -3px -3px rgb(76 81 91 / .55),10px 10px 0 rgb(91 96 106 / .6); }
+      .titlebar { height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 15px; color:#fff; border:1.5px solid var(--ink); background:var(--blue); font-size:13px; font-weight:800; letter-spacing:.11em; } .controls { display:flex; gap:5px; } .control { width:18px; height:18px; display:grid; place-items:center; color:var(--ink); border:1px solid var(--ink); background:linear-gradient(135deg,#fff,#bcc1cc); font-style:normal; }
+      .stage { min-height:calc(100vh - 104px); padding:clamp(24px,3.4vw,48px); border:1px solid rgb(30 38 53 / .32); background:radial-gradient(circle at 92% 14%,rgb(240 138 183 / .21),transparent 16rem),linear-gradient(135deg,rgb(220 235 255 / .78),rgb(255 255 255 / .98) 54%,rgb(255 224 236 / .72)); }
+      .eyebrow { margin:0; color:var(--blue); font-size:11px; font-weight:800; letter-spacing:.12em; } h1 { margin:8px 0 9px; font-size:clamp(32px,4vw,54px); line-height:.98; letter-spacing:-.07em; } .lead { max-width:760px; margin:0 0 30px; color:var(--muted); font-size:clamp(15px,1.5vw,20px); line-height:1.4; }
+      .template-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; } .template-card { display:flex; min-height:140px; flex-direction:column; padding:14px; border:1px solid rgb(49 88 158 / .3); background:rgb(255 255 255 / .72); } .template-card.current { border-color:#d96f9e; background:rgb(255 224 236 / .62); } .template-card h2 { margin:0; font-size:18px; line-height:1.05; } .template-card p { flex:1; margin:9px 0 13px; color:var(--muted); font-size:12px; line-height:1.4; } .template-card a { align-self:flex-start; padding:7px 9px; color:var(--blue); border:1px solid #819bd0; background:#f7faff; font-size:11px; font-weight:800; text-decoration:none; } .template-card.current a { color:var(--pink-deep); border-color:#d96f9e; background:var(--pink-soft); }
+      .rule { display:flex; justify-content:space-between; gap:20px; margin-top:30px; padding:12px; border-top:2px solid var(--pink); border-bottom:1px solid #d96f9e; color:var(--pink-deep); font-size:11px; font-weight:800; } .rule span:last-child { color:var(--muted); font-weight:600; }
+      @media (max-width:780px) { .template-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } } @media (max-width:520px) { body { padding:10px 0; } .screen { width:96vw; min-height:calc(100vh - 20px); } .stage { padding:22px 16px; } .template-grid { grid-template-columns:1fr; } .rule { display:block; } .rule span { display:block; } .rule span + span { margin-top:6px; } }
+      @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; scroll-behavior:auto!important; } }
+    </style>
+  </head>
+  <body>
+    <main class="screen">
+      <header class="titlebar"><span>TEMPLATE_INDEX / RUSTFIELD_VISUAL</span><span class="controls"><i class="control">−</i><i class="control">□</i><i class="control">×</i></span></header>
+      <section class="stage">
+        <p class="eyebrow">TEMPLATE ROUTER / 模板导航</p>
+        <h1>先选信息关系，<br />再选视觉结构。</h1>
+        <p class="lead">下面每个模板都只解决一种主要关系。制作横向教程时，优先从这里选择，不要从装饰开始。</p>
+        <div class="template-grid">
+          <article class="template-card current"><h2>从零开始</h2><p>统一窗口、标题、重点、机制插槽和可选点睛位。</p><a href="starter-16x9.html">打开起始模板 →</a></article>
+          <article class="template-card"><h2>主张焦点</h2><p>开场、转折或收束时，只放大一个结论。</p><a href="claim-focus-16x9.html">打开模板 →</a></article>
+          <article class="template-card"><h2>教程流程</h2><p>展示 3–6 个连续步骤，标题嵌入流动轨道。</p><a href="tutorial-flow-16x9.html">打开模板 →</a></article>
+          <article class="template-card"><h2>决策树</h2><p>展示一个根问题和有限分支，让选择关系可见。</p><a href="decision-tree-16x9.html">打开模板 →</a></article>
+          <article class="template-card"><h2>对比双窗</h2><p>展示 A/B 方案或前后差异，并给出一个判断标准。</p><a href="comparison-dual-window-16x9.html">打开模板 →</a></article>
+          <article class="template-card"><h2>输入输出台</h2><p>把素材、判断与可控结果组织成明确转换。</p><a href="input-output-desk-16x9.html">打开模板 →</a></article>
+          <article class="template-card"><h2>证据放大</h2><p>只解释一张图里的一个关键局部，不让文字压住证据。</p><a href="evidence-magnifier-16x9.html">打开模板 →</a></article>
+          <article class="template-card"><h2>数据叙事</h2><p>用一种图形、一处粉色标注和一句话解释变化。</p><a href="data-narrative-16x9.html">打开模板 →</a></article>
+          <article class="template-card"><h2>组件图谱</h2><p>查看基础视觉、信息表达、细节与动效的完整组件地图。</p><a href="component-atlas-16x9.html">打开图谱 →</a></article>
+          <article class="template-card current"><h2>小红书 3:4 图文</h2><p>1080×1440 竖向卡片，适合封面、观点、步骤、证据和收束页。</p><a href="cards-3x4.html">打开卡片模板 →</a></article>
+          <article class="template-card"><h2>公众号文章</h2><p>677px 阅读宽度，使用可直接粘贴到编辑器的 section 结构。</p><a href="wechat-article.html">打开文章模板 →</a></article>
+          <article class="template-card"><h2>Landing 页面</h2><p>以一个主张、一个行动和一组价值说明组织品牌入口。</p><a href="landing-16x9.html">打开 Landing →</a></article>
+          <article class="template-card"><h2>App / 工作台</h2><p>用侧栏、工作区、状态和任务关系表达工具型页面。</p><a href="app-16x9.html">打开 App 模板 →</a></article>
+          <article class="template-card current"><h2>完整视觉手册</h2><p>连续阅读全部颜色、字体、窗口、组件、信息形式、材质、动效和输出格式。</p><a href="soft-retro-visual-handbook.html">打开完整手册 →</a></article>
+        </div>
+        <div class="rule"><span>ROUTE RULE / 一屏一个主要机制</span><span>变化来自信息关系，不来自无理由换皮。</span></div>
+      </section>
+    </main>
+  </body>
+</html>

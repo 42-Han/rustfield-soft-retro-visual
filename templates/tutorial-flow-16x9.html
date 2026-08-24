@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rustfield · 教程流程轨道</title>
+    <style>
+      :root { --blue:#31589e; --blue-soft:#dcebff; --pink:#f08ab7; --pink-soft:#ffe0ec; --ink:#1e2635; --paper:#fff; --frame:#c6c8cd; --shadow:#5b606a; }
+      * { box-sizing:border-box; } body { margin:0; min-height:100vh; display:grid; place-items:center; color:var(--ink); font-family:Arial,"PingFang SC",sans-serif; background:radial-gradient(circle at 83% 78%,rgb(240 138 183 / .25),transparent 23rem),radial-gradient(rgb(49 88 158 / .13) 1px,transparent 1px) 0 0/16px 16px,#f8f7f3; }
+      .screen { width:min(94vw,1280px); aspect-ratio:16/9; padding:8px; border:2px solid #626873; background:linear-gradient(135deg,#fafafa,#d7d9dd 40%,#a7abb3); box-shadow:inset 2px 2px #fff,inset -3px -3px rgb(76 81 91 / .55),10px 10px 0 rgb(91 96 106 / .6); }
+      .titlebar { height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 15px; color:#fff; border:1.5px solid var(--ink); background:var(--blue); font-size:13px; font-weight:800; letter-spacing:.11em; }
+      .controls { display:flex; gap:5px; } .control { width:18px; height:18px; display:grid; place-items:center; color:var(--ink); border:1px solid var(--ink); background:linear-gradient(135deg,#fff,#bcc1cc); font-size:12px; }
+      .stage { height:calc(100% - 48px); padding:clamp(32px,5vw,76px); border:1px solid rgb(30 38 53 / .32); background:radial-gradient(circle at 91% 82%,rgb(240 138 183 / .28),transparent 17rem),linear-gradient(135deg,rgb(220 235 255 / .78),rgb(255 255 255 / .98) 50%,rgb(255 224 236 / .74)); }
+      .kicker { display:inline-block; padding:7px 10px; color:#8e2e5b; border:1px solid #d96f9e; background:var(--pink-soft); box-shadow:3px 3px 0 rgb(240 138 183 / .26); font-size:12px; font-weight:800; letter-spacing:.09em; }
+      h1 { max-width:920px; margin:28px 0 15px; font-size:clamp(38px,5vw,72px); line-height:.96; letter-spacing:-.065em; } .mark { padding:0 3px; background:linear-gradient(transparent 47%,rgb(240 138 183 / .72) 47% 90%,transparent 90%); }
+      .lead { max-width:690px; margin:0 0 clamp(34px,5vw,62px); font-size:clamp(17px,1.8vw,25px); line-height:1.5; }
+      /* 轨道节点直接承载标题：编号只是嵌在标题里的定位信息。 */
+      .rail { display:grid; grid-template-columns:1.35fr .95fr .95fr 1.05fr 1.15fr; gap:28px; margin:0; padding:0; list-style:none; }
+      .rail .step { position:relative; min-height:50px; }
+      .rail .step:not(:last-child)::after { position:absolute; z-index:0; top:25px; right:-28px; width:28px; height:2px; background:#7392c8; content:""; }
+      .rail .step:not(:last-child)::before { position:absolute; z-index:1; top:19px; right:-28px; border-top:7px solid transparent; border-bottom:7px solid transparent; border-left:9px solid #7392c8; content:""; }
+      .rail .step.active:not(:last-child)::after { background:repeating-linear-gradient(90deg,var(--pink) 0 9px,#ffc9dd 9px 15px); background-size:15px 2px; animation:signal 1.4s linear infinite; }
+      .rail .step.active:not(:last-child)::before { border-left-color:var(--pink); }
+      .rail .step strong { position:relative; z-index:2; display:flex; min-height:50px; align-items:center; padding:8px 10px 8px 42px; color:var(--ink); border:2px solid #7392c8; border-radius:12px; background:linear-gradient(135deg,#fff,#f5f8ff); box-shadow:inset 1px 1px rgb(255 255 255 / .95),inset -1px -1px rgb(49 88 158 / .09); font-size:clamp(14px,1.3vw,18px); line-height:1; letter-spacing:-.04em; white-space:nowrap; }
+      .rail .node { position:absolute; z-index:3; top:12px; left:11px; display:grid; width:26px; height:26px; place-items:center; color:var(--blue); border:1.5px solid currentColor; border-radius:50%; background:#fff; font-size:10px; font-weight:900; }
+      .rail .active strong { border-color:#d96f9e; background:linear-gradient(135deg,#fff5fa,var(--pink-soft)); }
+      .rail .active .node { color:#8e2e5b; background:var(--pink); }
+      @keyframes signal { to { background-position:17px 0; } } @media (prefers-reduced-motion:reduce) { * { animation:none!important; } }
+    </style>
+  </head>
+  <body>
+    <main class="screen">
+      <header class="titlebar"><span>AI_VIDEO_WORKFLOW / EPISODE_01</span><span class="controls"><i class="control">−</i><i class="control">□</i><i class="control">×</i></span></header>
+      <section class="stage">
+        <span class="kicker">01 / 先定义你的审美输入</span>
+        <h1>AI 视频不是从提示词开始，<br /><span class="mark">而是从判断开始。</span></h1>
+        <p class="lead">把内容替换为你的步骤说明。这里仅保留一条主张、一句解释和一条正在推进的路径。</p>
+        <ol class="rail" aria-label="五步流程">
+          <li class="step active"><span class="node">01</span><strong>定义风格与主题</strong></li>
+          <li class="step"><span class="node">02</span><strong>拆解参考</strong></li>
+          <li class="step"><span class="node">03</span><strong>选择模型</strong></li>
+          <li class="step"><span class="node">04</span><strong>组织提示词</strong></li>
+          <li class="step"><span class="node">05</span><strong>生成与剪辑</strong></li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

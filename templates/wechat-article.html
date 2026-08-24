@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rustfield · 公众号文章模板</title>
+    <style>
+      :root { --canvas:#f5f4ef; --blue:#31589e; --blue-soft:#dcebff; --pink:#f08ab7; --pink-deep:#8e2e5b; --pink-soft:#ffe0ec; --frame:#c6c8cd; --ink:#1e2635; --muted:#62718a; --paper:#fffdf8; }
+      * { box-sizing:border-box; }
+      body { margin:0; min-height:100vh; color:var(--ink); font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif; background:radial-gradient(rgb(49 88 158 / .13) 1px,transparent 1px) 0 0/18px 18px,var(--canvas); }
+      button { cursor:pointer; font:inherit; }
+      .toolbar { position:sticky; z-index:3; top:0; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; padding:14px 20px; border-bottom:1px solid rgb(30 38 53 / .2); background:rgb(245 244 239 / .94); backdrop-filter:blur(10px); }
+      .toolbar strong { color:var(--blue); font-size:13px; letter-spacing:.1em; }
+      .toolbar-actions { display:flex; flex-wrap:wrap; gap:8px; }
+      .toolbar button { padding:8px 12px; color:var(--blue-deep,#27457e); border:1px solid #819bd0; border-radius:999px; background:linear-gradient(#fff,#dcebff); font-size:12px; font-weight:800; }
+      .toolbar button.pink { color:var(--pink-deep); border-color:#d96f9e; background:linear-gradient(#fff8fb,var(--pink-soft)); }
+      .toolbar-note { width:100%; margin:0; color:var(--muted); font-size:12px; }
+      .workspace { display:grid; grid-template-columns:minmax(0,677px) minmax(280px,440px); align-items:start; justify-content:center; gap:28px; padding:34px 18px 70px; }
+      .wechat-preview { min-width:0; padding:0 26px 40px; background:var(--paper); box-shadow:0 10px 30px rgb(30 38 53 / .1); }
+      .article-copy { color:var(--ink); }
+      .article-kicker { padding-top:44px; margin:0 0 18px; text-align:center; }
+      .article-kicker span { color:var(--pink-deep); font-size:13px; font-weight:900; letter-spacing:5px; }
+      .article-title { margin:0 0 12px; text-align:center; font-size:34px; line-height:1.45; font-weight:900; letter-spacing:-.035em; }
+      .article-subtitle { margin:0 0 26px; color:var(--muted); text-align:center; font-size:17px; line-height:1.8; }
+      .quote { margin:0 0 24px; padding:24px 22px; border:1px solid rgb(49 88 158 / .2); border-radius:14px; background:linear-gradient(135deg,var(--blue-soft),#fff 70%); }
+      .quote p { margin:0; font-family:Georgia,"Songti SC",serif; font-size:21px; font-weight:900; line-height:1.9; }
+      .quote mark,.article-section mark { color:var(--ink); background:linear-gradient(transparent 60%,var(--pink) 60% 90%,transparent 90%); }
+      .divider { display:flex; justify-content:center; gap:5px; margin:0 0 38px; }
+      .divider span { display:block; height:4px; border-radius:2px; }
+      .divider .blue { width:36px; background:var(--blue); }
+      .divider .pink { width:18px; background:var(--pink); }
+      .divider .grey { width:8px; background:var(--frame-dark,#626873); }
+      .article-section { margin-bottom:50px; }
+      .section-ornament { overflow:visible; margin:0 0 7px; color:rgb(49 88 158 / .15); font-family:Georgia,"Songti SC",serif; font-size:62px; font-style:italic; font-weight:900; line-height:1; white-space:nowrap; }
+      .section-title { margin:0 0 12px; font-size:28px; line-height:1.45; font-weight:900; }
+      .section-rule { width:56px; height:6px; margin:0 0 22px; border-radius:3px; background:var(--pink); }
+      .article-section p { margin:0 0 18px; color:var(--ink); font-size:18px; line-height:2; }
+      .article-image { display:block; width:100%; margin:22px 0 10px; border:1px solid var(--frame); border-radius:10px; box-shadow:4px 5px 0 rgb(49 88 158 / .11); }
+      .caption { margin:0 0 18px!important; color:var(--muted)!important; text-align:center; font-size:13px!important; line-height:1.8!important; }
+      .ending { margin:48px 0 32px; text-align:center; }
+      .ending .mark { color:rgb(49 88 158 / .16); font-family:Georgia,serif; font-size:70px; font-style:italic; line-height:1; }
+      .ending p { margin:8px 0 7px; font-family:Georgia,"Songti SC",serif; font-size:22px; font-weight:900; line-height:1.8; }
+      .ending small { color:var(--muted); font-size:14px; line-height:1.8; }
+      .signature { padding:20px 0 0; text-align:center; border-top:1px solid rgb(49 88 158 / .18); }
+      .signature strong { display:block; margin-bottom:4px; font-size:15px; }
+      .signature span { color:var(--muted); font-size:13px; line-height:1.8; }
+      .copy-panel { position:sticky; top:84px; padding:20px; border:1px solid var(--frame); background:rgb(255 253 248 / .86); box-shadow:5px 6px 0 rgb(49 88 158 / .1); }
+      .copy-panel h2 { margin:0 0 10px; font-size:20px; }
+      .copy-panel p { margin:0 0 14px; color:var(--muted); font-size:13px; line-height:1.7; }
+      .copy-panel pre { max-height:420px; overflow:auto; margin:0; padding:14px; color:#3c4b63; border:1px solid rgb(49 88 158 / .2); background:#f7faff; font-size:11px; line-height:1.6; white-space:pre-wrap; word-break:break-word; }
+      .copy-status { min-height:20px; margin:12px 0 0!important; color:var(--pink-deep)!important; font-size:12px!important; }
+      @media (max-width:980px) { .workspace { grid-template-columns:minmax(0,677px); } .copy-panel { position:static; } }
+      @media (max-width:700px) { .workspace { padding:14px 0 40px; } .wechat-preview { padding-inline:20px; } .article-title { font-size:30px; } .copy-panel { margin:0 12px; } }
+      @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
+    </style>
+  </head>
+  <body>
+    <header class="toolbar">
+      <strong>RUSTFIELD / WECHAT ARTICLE</strong>
+      <div class="toolbar-actions">
+        <button type="button" onclick="copyInlineArticle(false)">复制公众号 HTML</button>
+        <button class="pink" type="button" onclick="copyInlineArticle(true)">复制 Base64 HTML</button>
+      </div>
+      <p class="toolbar-note">预览宽度 677px · 复制版只保留 section 与内联样式 · 正文与标题按语义阅读顺序生成。</p>
+    </header>
+    <main class="workspace">
+      <section class="wechat-preview" aria-label="公众号文章预览">
+        <div id="article-copy" class="article-copy"></div>
+      </section>
+      <aside class="copy-panel">
+        <h2>可复制版本</h2>
+        <p>左侧是阅读预览；右侧会显示可直接复制的片段。图片复制到公众号时，优先使用已上传的素材链接或 Base64 版本。</p>
+        <pre id="copy-output" aria-live="polite"></pre>
+        <p id="copy-status" class="copy-status">文章模板已生成。</p>
+      </aside>
+    </main>
+    <script>
+      const articleData = {
+        kicker: 'RUSTFIELD / AI VIDEO NOTES',
+        title: ['AI 视频不是从提示词开始，', '而是从判断开始。'],
+        subtitle: '先建立风格、参考、模型与镜头的共同语言，再让工具参与生成。',
+        quote: ['提示词只能复刻，', '思路才能迁移。'],
+        sections: [
+          { ornament:'01 / DIRECTION', title:'先定义你的审美输入', paragraphs:['先想清楚你要什么。风格、参考、配色、构图和人物状态，都是输入的一部分。','输入越有判断，输出就越少随机。'], highlight:'先定风格，再选内容。', image:'../assets/reference-placeholder.svg', caption:'风格与内容要先找到共同语言。' },
+          { ornament:'02 / BREAKDOWN', title:'别只说“很酷”，把感觉拆开。', paragraphs:['让 AI 分析配色、构图、节奏、镜头和转场，把模糊的喜欢变成后面可以复用的描述。'], highlight:'感觉 → 可理解、可复用的语言。', image:'../assets/reference-placeholder.svg', caption:'一张参考图，也可以拆成一套判断。' },
+          { ornament:'03 / JUDGEMENT', title:'生成只是中间站，节奏还要继续判断。', paragraphs:['先挑方向稳定的素材，再让多模态模型理解画面和音频，把素材剪成有故事性的片子。'], highlight:'工具负责生成，你负责判断。', image:'../assets/reference-placeholder.svg', caption:'让生成结果继续进入剪辑和选择。' }
+        ],
+        ending:['提示词只能复刻一条视频，', '思路能让你做出任何视频。'],
+        endingNote:'欢迎关注我，一起探索 AI 时代的一切可能性。',
+        signature:'@锈原 Rustfield',
+        signatureNote:'设计 · 美学 · 产品 · vibe coding'
+      };
+      const esc = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+      const inline = (tag, style, content, extra='') => `<${tag} style="${style}"${extra}>${content}</${tag}>`;
+      const makeArticle = (data, imageMap) => {
+        const root = 'max-width:677px;margin:0 auto;padding:44px 26px 40px;background:#fffdf8;color:#1e2635;font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif;';
+        const kicker = `<section style="text-align:center;margin-bottom:18px;"><span style="font-size:13px;font-weight:900;letter-spacing:5px;color:#8e2e5b;">${esc(data.kicker)}</span></section>`;
+        const title = `<section style="text-align:center;margin-bottom:12px;"><p style="margin:0;font-size:34px;font-weight:900;line-height:1.45;letter-spacing:-.035em;">${data.title.map(esc).join('<br>')}</p><p style="margin:12px 0 0;color:#62718a;font-size:17px;line-height:1.8;">${esc(data.subtitle)}</p></section>`;
+        const quote = `<section style="margin:0 0 24px;padding:24px 22px;border:1px solid rgba(49,88,158,.2);border-radius:14px;background:linear-gradient(135deg,#dcebff,#fff 70%);"><p style="margin:0;font-family:Georgia,'Songti SC',serif;font-size:21px;font-weight:900;line-height:1.9;">${esc(data.quote[0])}<br><span style="background:linear-gradient(transparent 60%,#f08ab7 60% 90%,transparent 90%);">${esc(data.quote[1])}</span></p></section>`;
+        const divider = `<section style="text-align:center;margin:0 0 38px;"><span style="display:inline-block;width:36px;height:4px;border-radius:2px;background:#31589e;"></span><span style="display:inline-block;width:18px;height:4px;margin-left:5px;border-radius:2px;background:#f08ab7;"></span><span style="display:inline-block;width:8px;height:4px;margin-left:5px;border-radius:2px;background:#626873;"></span></section>`;
+        const sections = data.sections.map((section, index) => {
+          const paragraphs = section.paragraphs.map(text => `<p style="margin:0 0 18px;font-size:18px;line-height:2;">${esc(text)}</p>`).join('');
+          const image = section.image ? `<img src="${esc(imageMap?.[index] || section.image)}" style="display:block;width:100%;margin:22px 0 10px;border:1px solid #c6c8cd;border-radius:10px;box-shadow:4px 5px 0 rgba(49,88,158,.11);">` : '';
+          const caption = section.caption ? `<p style="margin:0 0 18px;color:#62718a;text-align:center;font-size:13px;line-height:1.8;">${esc(section.caption)}</p>` : '';
+          const highlight = section.highlight ? `<p style="margin:0 0 18px;padding:12px 14px;background:#ffe0ec;font-size:18px;font-weight:900;line-height:1.8;"><span style="background:linear-gradient(transparent 60%,#f08ab7 60% 90%,transparent 90%);">${esc(section.highlight)}</span></p>` : '';
+          return `<section style="margin:0 0 50px;"><section style="margin:0 0 7px;overflow:visible;"><span style="color:rgba(49,88,158,.15);font-family:Georgia,'Songti SC',serif;font-size:62px;font-style:italic;font-weight:900;line-height:1;white-space:nowrap;">${esc(section.ornament)}</span></section><p style="margin:0 0 12px;font-size:28px;line-height:1.45;font-weight:900;">${esc(section.title)}</p><section style="width:56px;height:6px;margin:0 0 22px;border-radius:3px;background:#f08ab7;"></section>${paragraphs}${highlight}${image}${caption}</section>`;
+        }).join(divider);
+        const ending = `<section style="margin:48px 0 32px;text-align:center;"><span style="color:rgba(49,88,158,.16);font-family:Georgia,serif;font-size:70px;font-style:italic;line-height:1;">“</span><p style="margin:8px 0 7px;font-family:Georgia,'Songti SC',serif;font-size:22px;font-weight:900;line-height:1.8;">${esc(data.ending[0])}<br><span style="background:linear-gradient(transparent 60%,#f08ab7 60% 90%,transparent 90%);">${esc(data.ending[1])}</span></p><p style="margin:0;color:#62718a;font-size:14px;line-height:1.8;">${esc(data.endingNote)}</p></section>`;
+        const signature = `<section style="padding:20px 0 0;text-align:center;border-top:1px solid rgba(49,88,158,.18);"><p style="margin:0 0 4px;font-size:15px;font-weight:900;">${esc(data.signature)}</p><p style="margin:0;color:#62718a;font-size:13px;line-height:1.8;">${esc(data.signatureNote)}</p></section>`;
+        return `<section style="${root}">${kicker}${title}${quote}${divider}${sections}${ending}${signature}</section>`;
+      };
+      const previewArticle = makeArticle(articleData, {});
+      document.querySelector('#article-copy').innerHTML = previewArticle;
+      document.querySelector('#copy-output').textContent = previewArticle;
+      const status = document.querySelector('#copy-status');
+      const copyText = async html => { try { await navigator.clipboard.writeText(html); status.textContent = '已复制。可以粘贴到公众号编辑器，再替换图片地址。'; } catch { const area = document.createElement('textarea'); area.value = html; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); status.textContent = '已复制到剪贴板。'; } };
+      const imageToDataUrl = src => new Promise((resolve, reject) => { const image = new Image(); image.onload = () => { const canvas = document.createElement('canvas'); canvas.width = image.naturalWidth; canvas.height = image.naturalHeight; canvas.getContext('2d').drawImage(image, 0, 0); resolve(canvas.toDataURL('image/jpeg', .78)); }; image.onerror = reject; image.src = src; });
+      window.copyInlineArticle = async inlineImages => { let imageMap = {}; if (inlineImages) { status.textContent = '正在尝试内嵌图片…'; try { for (let i = 0; i < articleData.sections.length; i += 1) { if (articleData.sections[i].image) imageMap[i] = await imageToDataUrl(articleData.sections[i].image); } } catch { status.textContent = '本地文件无法读取图片；已改为复制相对路径版本，请先上传图片或用 localhost 打开。'; } } const html = makeArticle(articleData, imageMap); document.querySelector('#copy-output').textContent = html; await copyText(html); };
+    </script>
+  </body>
+</html>

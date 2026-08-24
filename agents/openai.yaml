@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rustfield Soft Retro Visual"
+  short_description: "为16:9教程、3:4小红书图文和公众号文章建立粉蓝灰复古视觉。"
+  default_prompt: "使用 $soft-retro-visual，按 Rustfield 视觉系统为我制作教程、图文卡片或公众号文章。"

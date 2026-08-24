@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">可替换的参考画面占位图</title>
+  <desc id="desc">用于视觉模板中的中性参考画面，提示创作者替换为自己的截图或案例。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#e8f1ff" />
+      <stop offset=".52" stop-color="#fffdfd" />
+      <stop offset="1" stop-color="#ffe4ef" />
+    </linearGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.25" fill="#31589e" opacity=".25" />
+    </pattern>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)" />
+  <rect width="960" height="540" fill="url(#dots)" />
+  <rect x="72" y="68" width="816" height="404" rx="8" fill="#fff" fill-opacity=".78" stroke="#667386" stroke-width="5" />
+  <rect x="72" y="68" width="816" height="54" rx="8" fill="#31589e" />
+  <circle cx="829" cy="95" r="9" fill="#fff" opacity=".86" />
+  <circle cx="855" cy="95" r="9" fill="#fff" opacity=".86" />
+  <text x="108" y="103" fill="#fff" font-family="Arial, PingFang SC, sans-serif" font-size="20" font-weight="700" letter-spacing="2">REFERENCE / REPLACE ME</text>
+  <rect x="120" y="172" width="300" height="190" rx="6" fill="#dbe8ff" stroke="#31589e" stroke-width="4" />
+  <path d="M145 325 218 247l57 52 50-70 72 96H145Z" fill="#31589e" opacity=".82" />
+  <circle cx="350" cy="215" r="26" fill="#ef79af" />
+  <rect x="478" y="177" width="300" height="20" rx="10" fill="#1e2635" opacity=".82" />
+  <rect x="478" y="222" width="244" height="14" rx="7" fill="#6c7890" opacity=".72" />
+  <rect x="478" y="252" width="276" height="14" rx="7" fill="#6c7890" opacity=".52" />
+  <rect x="478" y="304" width="182" height="48" rx="6" fill="#f8c6da" stroke="#ef79af" stroke-width="3" />
+  <text x="478" y="402" fill="#31589e" font-family="Arial, PingFang SC, sans-serif" font-size="25" font-weight="700">替换为你的截图、案例或证据</text>
+</svg>
